@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -29,10 +27,6 @@ namespace Com.InnoGames
 			Assert.IsFalse(myEnum.HasFlagNonAlloc(MyEnum.B));
 			Assert.IsTrue(myEnum.HasFlagNonAlloc(MyEnum.C));
 			Assert.IsFalse(myEnum.HasFlagNonAlloc(MyEnum.D));
-
-			string directoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			string filePath = directoryPath + "/SearchNamespaces.txt";
-			File.ReadAllLines(filePath);
 		}
 
 		private static bool HasFlagSystem()

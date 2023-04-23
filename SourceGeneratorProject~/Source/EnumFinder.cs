@@ -32,6 +32,10 @@ namespace Xarbrough.Pandority
 			{
 				enumDeclaration = enumDeclarationSyntax;
 
+				// Ignore enum nested within another class for now, because it requires more handling.
+				if (enumDeclaration.Parent is not NamespaceDeclarationSyntax)
+					return false;
+
 				return enumDeclarationSyntax.AttributeLists.Any(
 					a => a.Attributes.Any(attribute => attribute.Name.ToString() is
 						"System.Flags" or "System.FlagsAttribute" or "Flags" or "FlagsAttribute"));
