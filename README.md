@@ -26,7 +26,7 @@ The source generator will automatically generate code for enums that match the f
 
 **Example**
 
-```
+```csharp
 namespace Com.InnoGames
 {
     [System.Flags]
