@@ -15,8 +15,8 @@
 		<GenerateDependencyFile>false</GenerateDependencyFile>
 
 		<!-- Build generators in release mode to minimize compilation time impact. -->
-		<Configuration>Debug</Configuration>
-<!--		<Optimize>true</Optimize>-->
+		<Configuration>Release</Configuration>
+		<Optimize>true</Optimize>
 
 		<!-- Unchanged source should yield identical output to minimize version control noise and Unity imports. -->
 		<Deterministic>true</Deterministic>
