@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- Ensure compatibility of Roslyn source generator with Unity. -->
+		<!-- https://docs.unity3d.com/2021.3/Documentation/Manual/roslyn-analyzers.html -->
+		<!-- https://docs.unity3d.com/2021.3/Documentation/Manual/CSharpCompiler.html -->
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>9</LangVersion>
+
+		<!-- Platform-agnostic PDB symbol files. -->
+		<DebugType>portable</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+
+		<!-- The deps.json file is unnecessary in Unity due to their custom dependency management system. -->
+		<GenerateDependencyFile>false</GenerateDependencyFile>
+
+		<!-- Build generators in release mode to minimize compilation time impact. -->
+		<Configuration>Debug</Configuration>
+<!--		<Optimize>true</Optimize>-->
+
+		<!-- Unchanged source should yield identical output to minimize version control noise and Unity imports. -->
+		<Deterministic>true</Deterministic>
+
+		<!-- Destination path for copying the generated artifacts. -->
+		<UnityOutputDir>../SourceGenerator</UnityOutputDir>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Consult the Unity documentation to determine the supported Roslyn version. -->
+		<PackageReference Include="Microsoft.CodeAnalysis" Version="3.8.0" />
+	</ItemGroup>
+
+	<Target Name="CopyToUnity" AfterTargets="Build">
+		<ItemGroup>
+			<OutputFiles Include="$(OutputPath)*.dll" />
+			<OutputFiles Include="$(OutputPath)*.pdb" />
+		</ItemGroup>
+		<Copy SourceFiles="@(OutputFiles)" DestinationFolder="$(UnityOutputDir)" />
+	</Target>
+
+</Project>

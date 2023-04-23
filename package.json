@@ -1,0 +1,7 @@
+{
+  "name": "com.xarbrough.pandority",
+  "displayName": "Pandority",
+  "version": "1.0.0",
+  "unity": "2021.3",
+  "description": "A Roslyn source generator for Unity projects, which adds the extension method HasFlagNonAlloc to user-defined enums.\nThis custom method provides improved performance compared to System.Enum.HasFlag by avoiding boxing allocations."
+}
