@@ -1,10 +1,10 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
-using Microsoft.CodeAnalysis;
-using System.Text;
-
-namespace Xarbrough.Pandority
+﻿namespace Xarbrough.Pandority
 {
+	using Microsoft.CodeAnalysis.CSharp.Syntax;
+	using Microsoft.CodeAnalysis.Text;
+	using Microsoft.CodeAnalysis;
+	using System.Text;
+
 	/// <summary>
 	/// Uses the <see cref="EnumFinder"/> to find user defined enums that have a <see cref="System.FlagsAttribute"/>
 	/// and generates a custom HasFlag extension method for them. This provides a way to avoid boxing the enum values.
@@ -32,14 +32,11 @@ namespace Xarbrough.Pandority
 			{
 				SemanticModel model = context.Compilation.GetSemanticModel(enumDeclaration.SyntaxTree);
 
-				if (model.GetDeclaredSymbol(enumDeclaration) is not INamedTypeSymbol enumSymbol)
+				if (model.GetDeclaredSymbol(enumDeclaration) is INamedTypeSymbol enumSymbol)
 				{
-					// This could happen if the user enum fails to compile.
-					continue;
+					SourceText sourceText = GenerateHasFlagExtension(enumSymbol);
+					context.AddSource($"{enumSymbol.Name}PandorityExtensions.generated.cs", sourceText);
 				}
-
-				SourceText sourceText = GenerateHasFlagExtension(enumSymbol);
-				context.AddSource($"{enumSymbol.Name}_HasFlagExtension.generated.cs", sourceText);
 			}
 		}
 
@@ -47,20 +44,47 @@ namespace Xarbrough.Pandority
 		{
 			string namespaceName = enumSymbol.ContainingNamespace.ToDisplayString();
 			string enumTypeName = enumSymbol.Name;
-			string visibility = enumSymbol.DeclaredAccessibility.ToString().ToLowerInvariant();
+			string fullEnumTypeName = GetFullTypeName(enumSymbol);
+			string visibility = GetVisibility(enumSymbol);
 
-			return SourceText.From($@"
-namespace {namespaceName}
+			string source = $@"namespace {namespaceName}
 {{
-	{visibility} static class {enumTypeName}_HasFlagExtension
+	{visibility} static class {enumTypeName}PandorityExtensions
 	{{
-		public static bool HasFlagNonAlloc(this {enumTypeName} value, {enumTypeName} flag)
+		public static bool HasFlagNonAlloc(this {fullEnumTypeName} value, {fullEnumTypeName} flag)
 		{{
 			return (value & flag) == flag;
 		}}
 	}}
 }}
-", Encoding.UTF8);
+";
+			return SourceText.From(source, Encoding.UTF8);
+		}
+
+		private static string GetFullTypeName(INamedTypeSymbol enumSymbol)
+		{
+			// Handle enums nested within another class.
+			if (enumSymbol.ContainingType != null)
+				return GetFullTypeName(enumSymbol.ContainingType) + "." + enumSymbol.Name;
+
+			return enumSymbol.Name;
+		}
+
+		/// <summary>
+		/// Determines weather the extension method should be public or internal.
+		/// </summary>
+		private static string GetVisibility(INamedTypeSymbol typeSymbol)
+		{
+			while (typeSymbol.ContainingType != null)
+			{
+				// If any of the outer classes or the enum is internal, the extension method must follow suit.
+				if (typeSymbol.DeclaredAccessibility == Accessibility.Internal)
+					return "internal";
+
+				typeSymbol = typeSymbol.ContainingType;
+			}
+
+			return typeSymbol.DeclaredAccessibility.ToString().ToLowerInvariant();
 		}
 	}
 }
