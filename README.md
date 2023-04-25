@@ -18,36 +18,36 @@ This custom method provides improved performance compared to `System.Enum.HasFla
 
 ## Usage
 
-Install the package to your Unity project.
-The source generator will automatically generate code for enums that match the following criteria:
+Install the package to your Unity project. The source generator will be automatically configured during import.
 
-- Must be within a namespaces that starts with `Com.InnoGames`
-- Must have the `System.Flags` attribute applied
+To generate the extension code for **enums**:
 
-**Example**
+- Declare the `PandorityTarget` attribute on every assembly that should be visible to the generator
+- Apply the `System.Flags` attribute to the desired enum types
+
+### Example
 
 ```csharp
-namespace Com.InnoGames
-{
-    [System.Flags]
-    public enum Element
-    {
-        Fire = 1,
-        Water = 2,
-        Earth = 4,
-        Air = 8,
-    }
+[assembly: PandorityTarget]
 
-    public class GettingStarted
+[System.Flags]
+public enum Element
+{
+    Fire = 1,
+    Water = 2,
+    Earth = 4,
+    Air = 8,
+}
+
+public class GettingStarted
+{
+    public GettingStarted()
     {
-        public GettingStarted()
-        {
-            Element element = Element.Fire | Element.Earth;
-            bool hasFire = element.HasFlagNonAlloc(Element.Fire);
-            bool hasWater = element.HasFlagNonAlloc(Element.Water);
-            bool hasEarth = element.HasFlagNonAlloc(Element.Earth);
-            bool hasAir = element.HasFlagNonAlloc(Element.Air);
-        }
+        Element element = Element.Fire | Element.Earth;
+        bool hasFire = element.HasFlagNonAlloc(Element.Fire);
+        bool hasWater = element.HasFlagNonAlloc(Element.Water);
+        bool hasEarth = element.HasFlagNonAlloc(Element.Earth);
+        bool hasAir = element.HasFlagNonAlloc(Element.Air);
     }
 }
 ```
@@ -57,6 +57,11 @@ namespace Com.InnoGames
 The generated extension method is named `HasFlagNonAlloc` instead of `HasFlag` to avoid being hidden
 by the builtin `System.Enum.HasFlag` instance method. In C#, instance methods take precedence over extension methods.
 However, consider that the new name is also clearer about the fact that it's a performance optimization.
+
+## Implementation Notes
+
+The package comes with a Unity AssetPostprocessor which automatically configures the `Pandority.dll` importer.
+As a "bonus" feature, it will also apply to any DLL whose name ends with `SourceGenerator.dll`.
 
 ## Development
 
