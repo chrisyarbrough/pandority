@@ -1,9 +1,9 @@
 ﻿namespace Xarbrough.Pandority
 {
+	using System.Text;
+	using Microsoft.CodeAnalysis;
 	using Microsoft.CodeAnalysis.CSharp.Syntax;
 	using Microsoft.CodeAnalysis.Text;
-	using Microsoft.CodeAnalysis;
-	using System.Text;
 
 	/// <summary>
 	/// Uses the <see cref="EnumFinder"/> to find user defined enums that have a <see cref="System.FlagsAttribute"/>
@@ -15,7 +15,7 @@
 	/// a generic HasFlag method is not so easy due to missing constraint support for this special case. Therefore,
 	/// the most practical solution is to implement an extension method for each concrete enum type.
 	/// </remarks>
-	[Generator]
+	/// <seealso cref="LoggingGenerator"/>
 	internal class EnumHasFlagGenerator : ISourceGenerator
 	{
 		public void Initialize(GeneratorInitializationContext context)
@@ -26,6 +26,9 @@
 		public void Execute(GeneratorExecutionContext context)
 		{
 			if (context.SyntaxReceiver is not EnumFinder enumFinder)
+				return;
+
+			if (!TargetAttribute.IsTargetAssembly(context))
 				return;
 
 			foreach (EnumDeclarationSyntax enumDeclaration in enumFinder.EnumDeclarations)
@@ -58,6 +61,7 @@
 	}}
 }}
 ";
+			// The explicit encoding is required.
 			return SourceText.From(source, Encoding.UTF8);
 		}
 

@@ -27,10 +27,7 @@ namespace Xarbrough.Pandority
 			if (HasFlagsAttribute(enumDeclaration) == false)
 				return;
 
-			if (SearchConfiguration.IsInUserScope(enumDeclaration))
-			{
-				EnumDeclarations.Add(enumDeclaration);
-			}
+			EnumDeclarations.Add(enumDeclaration);
 		}
 
 		/// <summary>

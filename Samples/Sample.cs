@@ -1,6 +1,8 @@
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedType.Local
 
+[assembly: PandorityTarget]
+
 namespace Com.InnoGames
 {
 	using System;
