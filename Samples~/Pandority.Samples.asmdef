@@ -1,10 +1,8 @@
 {
-    "name": "Xarbrough.Pandority.Editor",
+    "name": "Pandority.Samples",
     "rootNamespace": "",
     "references": [],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

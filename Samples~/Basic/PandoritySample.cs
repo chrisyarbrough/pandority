@@ -1,7 +1,6 @@
-// ReSharper disable UnusedType.Global
-// ReSharper disable UnusedType.Local
+// ReSharper disable All
 
-namespace Com.InnoGames
+namespace Pandority.Sample
 {
 	using System;
 	using UnityEngine;
@@ -21,7 +20,10 @@ namespace Com.InnoGames
 		D = 0b_1000,
 	}
 
-	public class Sample : MonoBehaviour
+	/// <summary>
+	/// Take note of the AssemblyInfo.cs file which applies the PandorityTarget attribute to the assembly.
+	/// </summary>
+	public class PandoritySample : MonoBehaviour
 	{
 		[Flags]
 		public enum MyNestedPublic

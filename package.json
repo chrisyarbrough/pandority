@@ -3,5 +3,16 @@
   "displayName": "Pandority",
   "version": "1.0.0",
   "unity": "2021.3",
-  "description": "A Roslyn source generator for Unity projects, which adds the extension method HasFlagNonAlloc to user-defined enums.\nThis custom method provides improved performance compared to System.Enum.HasFlag by avoiding boxing allocations."
+  "description": "A Roslyn source generator for Unity projects, which adds the extension method HasFlagNonAlloc to user-defined enums.\nThis custom method provides improved performance compared to System.Enum.HasFlag by avoiding boxing allocations.",
+  "author": {
+    "name": "Chris Yarbrough",
+    "url": "https://github.com/chrisyarbrough/pandority"
+  },
+  "samples": [
+    {
+      "displayName": "Basic",
+      "description": "A single class that demonstrates how the code generator is used.",
+      "path": "Samples~/Basic"
+    }
+  ]
 }

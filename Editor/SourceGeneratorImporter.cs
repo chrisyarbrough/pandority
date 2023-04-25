@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace Xarbrough.Pandority
+namespace Pandority
 {
 	/// <summary>
 	/// Ensures that source generator DLLs have the necessary settings to work in Unity.

@@ -10,4 +10,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 *This version adds the extension method `HasFlagNonAlloc` to user-defined enums and
 acts as a reference for how Roslyn source generators can be used in Unity.*
-[README.md](README.md)

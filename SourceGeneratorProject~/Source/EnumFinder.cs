@@ -1,4 +1,4 @@
-namespace Xarbrough.Pandority
+namespace Pandority
 {
 	using Microsoft.CodeAnalysis.CSharp.Syntax;
 	using Microsoft.CodeAnalysis;
