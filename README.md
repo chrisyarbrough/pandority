@@ -58,6 +58,18 @@ The generated extension method is named `HasFlagNonAlloc` instead of `HasFlag` t
 by the builtin `System.Enum.HasFlag` instance method. In C#, instance methods take precedence over extension methods.
 However, consider that the new name is also clearer about the fact that it's a performance optimization.
 
+## Troubleshooting
+
+If the source generator fails to run, check if a crash log was generated in these locations:
+
+| Operating System | Log File Location          |
+|-----------------:|:---------------------------|
+|            macOS | `~/Library/Logs/Pandority` |
+|          Windows | `%LOCALAPPDATA%\Pandority` |
+|            Linux | `~/.config/Pandority`      |
+
+Run `sh ./open-log.sh` (macOS) to open the log file with a default application (e.g. Console.app).
+
 ## Implementation Notes
 
 The package comes with a Unity AssetPostprocessor which automatically configures the `Pandority.dll` importer.
@@ -65,8 +77,9 @@ As a "bonus" feature, it will also apply to any DLL whose name ends with `Source
 
 ## Development
 
+Open the _SourceGeneratorProject_ directory in your IDE to modify the source generator.
+Review the contents of the .csproj file to see the configuration and build process details.
+
 Run `nuget restore` to install the required NuGet packages.
 
-Before building the project, review the .csproj file and
-ensure that the configuration matches the oldest supported Unity version.
-The project is set up to automatically copy the built DLL to the Unity package directory.
+Run `dotnet build` to produce a new DLL that will be automatically copied to the Unity package directory.
