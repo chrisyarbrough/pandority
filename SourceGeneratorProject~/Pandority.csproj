@@ -7,22 +7,26 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>9</LangVersion>
 
-		<!-- Platform-agnostic PDB symbol files. -->
-		<DebugType>portable</DebugType>
-		<DebugSymbols>true</DebugSymbols>
+		<Nullable>enable</Nullable>
 
 		<!-- The deps.json file is unnecessary in Unity due to their custom dependency management system. -->
 		<GenerateDependencyFile>false</GenerateDependencyFile>
 
-		<!-- Build generators in release mode to minimize compilation time impact. -->
-		<Configuration>Release</Configuration>
-		<Optimize>true</Optimize>
-
-		<!-- Unchanged source should yield identical output to minimize version control noise and Unity imports. -->
-		<Deterministic>true</Deterministic>
-
 		<!-- Destination path for copying the generated artifacts. -->
 		<UnityOutputDir>../SourceGenerator</UnityOutputDir>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<!-- Platform-agnostic PDB symbol files that are stored within the DLL. -->
+		<DebugType>embedded</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<!-- Unchanged source should yield identical output to minimize version control noise and Unity imports. -->
+		<Deterministic>true</Deterministic>
+		<DebugSymbols>false</DebugSymbols>
+		<Optimize>true</Optimize>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -33,7 +37,6 @@
 	<Target Name="CopyToUnity" AfterTargets="Build">
 		<ItemGroup>
 			<OutputFiles Include="$(OutputPath)*.dll" />
-			<OutputFiles Include="$(OutputPath)*.pdb" />
 		</ItemGroup>
 		<Copy SourceFiles="@(OutputFiles)" DestinationFolder="$(UnityOutputDir)" />
 	</Target>
