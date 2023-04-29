@@ -1,5 +1,6 @@
 ﻿namespace Pandority
 {
+	using System;
 	using System.Text;
 	using Microsoft.CodeAnalysis;
 	using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -18,6 +19,8 @@
 	/// <seealso cref="LoggingGenerator"/>
 	internal class EnumHasFlagGenerator : ISourceGenerator
 	{
+		private readonly Log log = new($"{nameof(EnumHasFlagGenerator)}.log");
+
 		public void Initialize(GeneratorInitializationContext context)
 		{
 			context.RegisterForSyntaxNotifications(() => new EnumFinder());
@@ -28,8 +31,12 @@
 			if (context.SyntaxReceiver is not EnumFinder enumFinder)
 				return;
 
+			log.Debug($"Visiting assembly: {context.Compilation.AssemblyName}");
+
 			if (!TargetAttribute.IsTargetAssembly(context))
 				return;
+
+			log.Debug("Found assembly target attribute. Generating enum extensions...");
 
 			foreach (EnumDeclarationSyntax enumDeclaration in enumFinder.EnumDeclarations)
 			{
@@ -39,6 +46,7 @@
 				{
 					SourceText sourceText = GenerateHasFlagExtension(enumSymbol);
 					context.AddSource($"{enumSymbol.Name}PandorityExtensions.generated.cs", sourceText);
+					log.Debug($"->{enumSymbol.Name}");
 				}
 			}
 		}

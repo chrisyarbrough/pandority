@@ -56,11 +56,11 @@ public class GettingStarted
 
 The generated extension method is named `HasFlagNonAlloc` instead of `HasFlag` to avoid being hidden
 by the builtin `System.Enum.HasFlag` instance method. In C#, instance methods take precedence over extension methods.
-However, consider that the new name is also clearer about the fact that it's a performance optimization.
+However, consider that the new name is also clearer about the fact that it is a performance optimization.
 
 ## Troubleshooting
 
-If the source generator fails to run, check if a crash log was generated in these locations:
+If the source generator fails to run, check for a crash log in these locations:
 
 | Operating System | Log File Location          |
 |-----------------:|:---------------------------|
@@ -68,7 +68,19 @@ If the source generator fails to run, check if a crash log was generated in thes
 |          Windows | `%LOCALAPPDATA%\Pandority` |
 |            Linux | `~/.config/Pandority`      |
 
-Run `sh ./open-log.sh` (macOS) to open the log file with a default application (e.g. Console.app).
+### Script Utilities
+The following log helper can be run as a shell script in a bash interpreter:
+
+`sh ./open-log.sh` opens the log file directory.
+
+`sh ./open-log.sh crash` opens the global crash log file.
+
+`sh ./open-log.sh EnumHasFlagGenerator` opens the generator's debug log.
+
+If a file is not found, its parent directory will be opened instead.
+In cases where the log directory does not exist, the script will print its path.
+
+To enable debug logs, refer to the _Development_ section for instructions.
 
 ## Implementation Notes
 
@@ -83,3 +95,9 @@ Review the contents of the .csproj file to see the configuration and build proce
 Run `nuget restore` to install the required NuGet packages.
 
 Run `dotnet build` to produce a new DLL that will be automatically copied to the Unity package directory.
+
+A new release of the generator should always be built with the release configuration for performance reasons.
+
+### Debug Logging
+To enable more detailed logging beyond the always-enabled crash log,
+set the solution configuration to `Debug` and rebuild the project.

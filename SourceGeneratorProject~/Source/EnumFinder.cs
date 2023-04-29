@@ -33,7 +33,7 @@ namespace Pandority
 		/// <summary>
 		/// Determines if the enum is visible to the client code.
 		/// </summary>
-		private static bool IsVisible(MemberDeclarationSyntax syntaxNode)
+		private static bool IsVisible(MemberDeclarationSyntax? syntaxNode)
 		{
 			while (syntaxNode != null)
 			{
