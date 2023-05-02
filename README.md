@@ -14,6 +14,7 @@ This custom method provides improved performance compared to `System.Enum.HasFla
 **To develop**
 
 - JetBrains Rider or Visual Studio
+- [NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download)
 - Consult the [Unity documentation](https://docs.unity3d.com/2021.3/Documentation/Manual/roslyn-analyzers.html)
 
 ## Usage
@@ -69,15 +70,14 @@ If the source generator fails to run, check for a crash log in these locations:
 |            Linux | `~/.config/Pandority`      |
 
 ### Script Utilities
+
 The following log helper can be run as a shell script in a bash interpreter:
 
 `sh ./open-log.sh` opens the log file directory.
 
-`sh ./open-log.sh crash` opens the global crash log file.
+`sh ./open-log.sh <file>` opens the log with the file name.
 
-`sh ./open-log.sh EnumHasFlagGenerator` opens the generator's debug log.
-
-If a file is not found, its parent directory will be opened instead.
+If a file is not found, the log directory will be opened instead.
 In cases where the log directory does not exist, the script will print its path.
 
 To enable debug logs, refer to the _Development_ section for instructions.
@@ -94,10 +94,18 @@ Review the contents of the .csproj file to see the configuration and build proce
 
 Run `nuget restore` to install the required NuGet packages.
 
-Run `dotnet build` to produce a new DLL that will be automatically copied to the Unity package directory.
+Run `dotnet build --configuration Release`
+to produce an optimized DLL that will be automatically copied to the Unity package directory.
+
+Run `dotnet build` to build a debug version with logging enabled.
 
 A new release of the generator should always be built with the release configuration for performance reasons.
 
 ### Debug Logging
+
 To enable more detailed logging beyond the always-enabled crash log,
 set the solution configuration to `Debug` and rebuild the project.
+
+### Testing
+
+Run `dotnet test` to execute the unit tests. The test project uses xUnit and NET 6.0.

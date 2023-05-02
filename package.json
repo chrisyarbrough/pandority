@@ -10,9 +10,9 @@
   },
   "samples": [
     {
-      "displayName": "Basic",
-      "description": "A single class that demonstrates how the code generator is used.",
-      "path": "Samples~/Basic"
+      "displayName": "Enum HasFlag",
+      "description": "Demonstrates how to setup flag enums so that the extension method is generated.",
+      "path": "Samples~/EnumHasFlag"
     }
   ]
 }

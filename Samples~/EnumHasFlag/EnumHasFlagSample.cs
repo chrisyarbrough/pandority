@@ -1,6 +1,7 @@
 // ReSharper disable All
+#pragma warning disable
 
-namespace Pandority.Sample
+namespace Pandority.EnumHasFlag
 {
 	using System;
 	using UnityEngine;
@@ -23,7 +24,7 @@ namespace Pandority.Sample
 	/// <summary>
 	/// Take note of the AssemblyInfo.cs file which applies the PandorityTarget attribute to the assembly.
 	/// </summary>
-	public class PandoritySample : MonoBehaviour
+	public class EnumHasFlagSample : MonoBehaviour
 	{
 		[Flags]
 		public enum MyNestedPublic

@@ -1,5 +1,7 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pandority", "Pandority.csproj", "{3E434FF5-A885-4F77-B0FF-A654D40EBED0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pandority", "Pandority\Pandority.csproj", "{3E434FF5-A885-4F77-B0FF-A654D40EBED0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pandority.Tests", "Pandority.Tests\Pandority.Tests.csproj", "{6DE0115B-A986-4FD5-8F37-2239E3AE4C8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,5 +13,9 @@ Global
 		{3E434FF5-A885-4F77-B0FF-A654D40EBED0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3E434FF5-A885-4F77-B0FF-A654D40EBED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3E434FF5-A885-4F77-B0FF-A654D40EBED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DE0115B-A986-4FD5-8F37-2239E3AE4C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DE0115B-A986-4FD5-8F37-2239E3AE4C8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DE0115B-A986-4FD5-8F37-2239E3AE4C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DE0115B-A986-4FD5-8F37-2239E3AE4C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

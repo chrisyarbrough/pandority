@@ -1,10 +1,10 @@
 namespace Pandority
 {
-	using Microsoft.CodeAnalysis.CSharp.Syntax;
 	using Microsoft.CodeAnalysis;
+	using Microsoft.CodeAnalysis.CSharp;
+	using Microsoft.CodeAnalysis.CSharp.Syntax;
 	using System.Collections.Generic;
 	using System.Linq;
-	using Microsoft.CodeAnalysis.CSharp;
 
 	/// <summary>
 	/// Identifies the user enums that the source generator should generate code for.
@@ -35,19 +35,8 @@ namespace Pandority
 		/// </summary>
 		private static bool IsVisible(MemberDeclarationSyntax? syntaxNode)
 		{
-			while (syntaxNode != null)
-			{
-				if (syntaxNode.Modifiers.Any(IsHidden))
-				{
-					// It is not possible to generate an extension method for hidden enums.
-					return false;
-				}
-
-				syntaxNode = syntaxNode.Parent as MemberDeclarationSyntax;
-			}
-
-			// All outer classes and the enum itself are internal or public.
-			return true;
+			return !syntaxNode?.AncestorsAndSelf().OfType<MemberDeclarationSyntax>()
+				.Any(node => node.Modifiers.Any(IsHidden)) ?? false;
 		}
 
 		private static bool IsHidden(SyntaxToken token)
