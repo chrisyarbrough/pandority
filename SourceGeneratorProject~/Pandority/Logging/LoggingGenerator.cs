@@ -4,20 +4,23 @@ namespace Pandority
 	using System;
 
 	/// <summary>
-	/// A generator that logs any exception that occurs during the code generation to a file.
+	/// A generator that logs any exception that occurs during the code generation to a file
+	/// and supports waiting for a debugger to be attached during development.
 	/// </summary>
 	internal abstract class LoggingGenerator : ISourceGenerator
 	{
 		private readonly ILog crashLog;
 		private readonly ILog debugLog;
+		private readonly DebugUtility debugUtility;
 
 		protected LoggingGenerator(ILog crashLog, ILog debugLog)
 		{
 			this.crashLog = crashLog;
 			this.debugLog = debugLog;
+			this.debugUtility = new DebugUtility(debugLog);
 		}
 
-		protected ILog DebugLog => debugLog;
+		protected ILog Log => debugLog;
 
 		public void Initialize(GeneratorInitializationContext context)
 		{
@@ -35,6 +38,7 @@ namespace Pandority
 		{
 			try
 			{
+				debugUtility.WaitForDebugger(context);
 				ExecuteGenerator(context);
 			}
 			catch (Exception ex)
