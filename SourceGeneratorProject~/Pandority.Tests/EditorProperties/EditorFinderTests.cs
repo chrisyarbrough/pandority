@@ -19,8 +19,8 @@ public partial class MyTargetEditor : Editor
 
 		EditorFinder editorFinder = FakeSyntaxReceiverVisit(compilation);
 
-		editorFinder.TargetToEditor.Count.Should().Be(1);
-		(TypeSyntax targetType, ClassDeclarationSyntax editorClass) = editorFinder.TargetToEditor.First();
+		editorFinder.CustomEditors.Should().ContainSingle();
+		(TypeSyntax targetType, ClassDeclarationSyntax editorClass) = editorFinder.CustomEditors.First();
 
 		targetType.Should().NotBeNull();
 		editorClass.Should().NotBeNull();
@@ -45,7 +45,7 @@ public class MyTargetEditor : Editor
 }");
 
 		EditorFinder editorFinder = FakeSyntaxReceiverVisit(compilation);
-		editorFinder.TargetToEditor.Should().HaveCount(0);
+		editorFinder.CustomEditors.Should().BeEmpty();
 	}
 
 	[Fact]
@@ -58,7 +58,7 @@ public partial class MyTargetEditor : Editor
 }");
 
 		EditorFinder editorFinder = FakeSyntaxReceiverVisit(compilation);
-		editorFinder.TargetToEditor.Should().HaveCount(0);
+		editorFinder.CustomEditors.Should().BeEmpty();
 	}
 
 	private static EditorFinder FakeSyntaxReceiverVisit(Compilation compilation)

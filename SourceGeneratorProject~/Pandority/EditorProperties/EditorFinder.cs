@@ -14,7 +14,7 @@ namespace Pandority
 		/// <summary>
 		/// Keys are the target Object types, values are the Editor types.
 		/// </summary>
-		public readonly Dictionary<TypeSyntax, ClassDeclarationSyntax> TargetToEditor = new();
+		public readonly Dictionary<TypeSyntax, ClassDeclarationSyntax> CustomEditors = new();
 
 		public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
 		{
@@ -23,7 +23,7 @@ namespace Pandority
 			    TryGetEditorAttribute(classDeclaration, out TypeOfExpressionSyntax typeofExpression))
 			{
 				TypeSyntax targetType = typeofExpression.Type;
-				TargetToEditor[targetType] = classDeclaration;
+				CustomEditors[targetType] = classDeclaration;
 			}
 		}
 

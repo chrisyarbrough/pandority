@@ -63,7 +63,7 @@
 			if (!assemblyFilter.IsTargetAssembly(context.Compilation))
 				return;
 
-			DebugLog.WriteLine("Found assembly target attribute. Generating enum extensions...");
+			Log.WriteLine("Found assembly target attribute. Generating enum extensions...");
 
 			foreach (EnumDeclarationSyntax enumDeclaration in enumFinder.EnumDeclarations)
 			{
@@ -76,7 +76,7 @@
 				{
 					SourceText sourceText = GenerateHasFlagExtension(enumSymbol);
 					context.AddSource($"{enumSymbol.Name}PandorityExtensions.generated.cs", sourceText);
-					DebugLog.WriteLine($"->{enumSymbol.Name}");
+					Log.WriteLine($"->{enumSymbol.Name}");
 				}
 			}
 		}
