@@ -24,7 +24,7 @@
 		/// Used by Roslyn in release builds.
 		/// </summary>
 		public EnumHasFlagGenerator() : this(
-			assemblyFilter: new TargetAttributeFilter(),
+			assemblyFilter: new AnyOfFilter(new TargetAttributeFilter(), new ConfigFileFilter()),
 			crashLog: new Log(new FileNameBuilder("Crash_EnumHasFlag")),
 			debugLog: GetDebugLog())
 		{
@@ -58,9 +58,7 @@
 			if (context.SyntaxReceiver is not EnumFinder enumFinder)
 				return;
 
-			TargetAttribute.GenerateAttribute(context);
-
-			if (!assemblyFilter.IsTargetAssembly(context.Compilation))
+			if (!assemblyFilter.IsTargetAssembly(context))
 				return;
 
 			Log.WriteLine("Found assembly target attribute. Generating enum extensions...");

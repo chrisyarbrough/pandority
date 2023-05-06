@@ -53,6 +53,15 @@ public class GettingStarted
 }
 ```
 
+Alternatively, to specify multiple assemblies in one place, create a file named `Config.Pandority.additionalfile`
+in the Unity Assets folder and list the assembly names, one per line.
+
+```.additionalfile
+MyAssemblyName
+Unity.2D.Common.Runtime
+UnityEngine.UI
+```
+
 ## Limitations
 
 The generated extension method is named `HasFlagNonAlloc` instead of `HasFlag` to avoid being hidden

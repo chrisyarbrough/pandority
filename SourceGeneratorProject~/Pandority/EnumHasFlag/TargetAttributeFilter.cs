@@ -4,16 +4,24 @@ namespace Pandority
 	using System.Linq;
 
 	/// <summary>
-	/// Identifies user assemblies that should be processed by Pandority.
+	/// Generates the <c>PandorityTarget</c> attribute which marks a user assembly to be processed by Pandority.
 	/// </summary>
-	/// <remarks>
-	/// Users mark an assembly by adding the <c>PandorityTarget</c> attribute to it.
-	/// </remarks>
 	internal class TargetAttributeFilter : IAssemblyFilter
 	{
-		public bool IsTargetAssembly(Compilation compilation)
+		private const string attributeName = "PandorityTargetAttribute";
+
+		private static string AttributeSource => @$"using System;
+
+[AttributeUsage(AttributeTargets.Assembly)]
+internal class {attributeName} : Attribute
+{{
+}}";
+
+		public bool IsTargetAssembly(GeneratorExecutionContext context)
 		{
-			return compilation.Assembly.GetAttributes()
+			context.AddSource($"{attributeName}.generated.cs", AttributeSource);
+
+			return context.Compilation.Assembly.GetAttributes()
 				.Any(x => x.AttributeClass?.Name is "PandorityTarget" or "PandorityTargetAttribute");
 		}
 	}

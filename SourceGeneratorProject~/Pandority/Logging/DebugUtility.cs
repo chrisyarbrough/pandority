@@ -21,7 +21,8 @@ namespace Pandority
 		[Conditional("DEBUG")]
 		public void WaitForDebugger(GeneratorExecutionContext context)
 		{
-			if (context.ParseOptions.PreprocessorSymbolNames.Contains("PANDORITY_WAIT_FOR_DEBUGGER"))
+			if (context.ParseOptions != null &&
+			    context.ParseOptions.PreprocessorSymbolNames.Contains("PANDORITY_WAIT_FOR_DEBUGGER"))
 			{
 				log.WriteLine("Waiting for debugger to attach...");
 				while (!Debugger.IsAttached)

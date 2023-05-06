@@ -31,6 +31,6 @@ public class EnumHasFlagGeneratorTests : CompilationTest
 		var driver = CSharpGeneratorDriver.Create(new EnumHasFlagGenerator(assemblyFilterMock, ILog.Null, ILog.Null));
 		driver.RunGenerators(compilation).GetRunResult();
 
-		assemblyFilterMock.Received().IsTargetAssembly(Arg.Any<Compilation>());
+		assemblyFilterMock.Received().IsTargetAssembly(Arg.Any<GeneratorExecutionContext>());
 	}
 }

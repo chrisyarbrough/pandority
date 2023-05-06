@@ -4,6 +4,6 @@ namespace Pandority
 
 	internal interface IAssemblyFilter
 	{
-		bool IsTargetAssembly(Compilation compilation);
+		bool IsTargetAssembly(GeneratorExecutionContext context);
 	}
 }
