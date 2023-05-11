@@ -7,6 +7,18 @@ namespace Pandority
 
 	internal class DebugUtility
 	{
+		public static bool IsDebugBuild
+		{
+			get
+			{
+#if DEBUG
+				return true;
+#else
+				return false;
+#endif
+			}
+		}
+
 		private readonly ILog log;
 
 		public DebugUtility(ILog log)

@@ -8,21 +8,16 @@ namespace Pandority
 	/// </summary>
 	internal class TargetAttributeFilter : IAssemblyFilter
 	{
-		private const string attributeName = "PandorityTargetAttribute";
+		private readonly string attributeName;
 
-		private static string AttributeSource => @$"using System;
-
-[AttributeUsage(AttributeTargets.Assembly)]
-internal class {attributeName} : Attribute
-{{
-}}";
+		public TargetAttributeFilter(string attributeName)
+		{
+			this.attributeName = attributeName;
+		}
 
 		public bool IsTargetAssembly(GeneratorExecutionContext context)
 		{
-			context.AddSource($"{attributeName}.generated.cs", AttributeSource);
-
-			return context.Compilation.Assembly.GetAttributes()
-				.Any(x => x.AttributeClass?.Name is "PandorityTarget" or "PandorityTargetAttribute");
+			return context.Compilation.Assembly.GetAttributes().Any(x => x.AttributeClass?.Name == attributeName);
 		}
 	}
 }

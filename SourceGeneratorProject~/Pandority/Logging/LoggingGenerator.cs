@@ -52,5 +52,13 @@ namespace Pandority
 		}
 
 		protected abstract void ExecuteGenerator(GeneratorExecutionContext context);
+
+		protected static ILog GetDebugLog(string nameHint)
+		{
+			if (DebugSwitch.IsEnabled())
+				return new Log(new FileNameBuilder(nameHint));
+
+			return ILog.Null;
+		}
 	}
 }

@@ -13,11 +13,11 @@ public class EnumHasFlagGeneratorTests : CompilationTest
 		bool hasTargetAttributeClass = result.GeneratedTrees.Any(tree =>
 		{
 			return tree.GetCompilationUnitRoot().DescendantNodes().OfType<ClassDeclarationSyntax>()
-				.Any(classDeclaration => classDeclaration.Identifier.Text == "PandorityTargetAttribute");
+				.Any(classDeclaration => classDeclaration.Identifier.Text == "PandorityTarget");
 		});
 
 		Assert.True(hasTargetAttributeClass,
-			"PandorityTargetAttribute was not found in the generated code.\n" +
+			"'PandorityTarget' attribute was not found in the generated code.\n" +
 			"It is required to mark user assemblies that should be searched for enums.");
 	}
 

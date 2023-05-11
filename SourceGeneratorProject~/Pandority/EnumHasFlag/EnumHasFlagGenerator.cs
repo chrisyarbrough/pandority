@@ -3,6 +3,7 @@
 	using Microsoft.CodeAnalysis;
 	using Microsoft.CodeAnalysis.CSharp.Syntax;
 	using Microsoft.CodeAnalysis.Text;
+	using System;
 	using System.Text;
 
 	/// <summary>
@@ -18,15 +19,17 @@
 	[Generator]
 	internal class EnumHasFlagGenerator : LoggingGenerator
 	{
+		private const string targetAttributeName = "PandorityTarget";
+
 		private readonly IAssemblyFilter assemblyFilter;
 
 		/// <summary>
 		/// Used by Roslyn in release builds.
 		/// </summary>
 		public EnumHasFlagGenerator() : this(
-			assemblyFilter: new AnyOfFilter(new TargetAttributeFilter(), new ConfigFileFilter()),
+			assemblyFilter: new AnyOfFilter(new TargetAttributeFilter(targetAttributeName), new ConfigFileFilter()),
 			crashLog: new Log(new FileNameBuilder("Crash_EnumHasFlag")),
-			debugLog: GetDebugLog())
+			debugLog: GetDebugLog("Debug_EnumHasFlag"))
 		{
 		}
 
@@ -40,14 +43,6 @@
 			this.assemblyFilter = assemblyFilter;
 		}
 
-		private static ILog GetDebugLog()
-		{
-			if (DebugSwitch.IsEnabled())
-				return new Log(new FileNameBuilder("Debug_EnumHasFlag"));
-
-			return ILog.Null;
-		}
-
 		protected override void InitializeGenerator(GeneratorInitializationContext context)
 		{
 			context.RegisterForSyntaxNotifications(() => new EnumFinder());
@@ -57,6 +52,9 @@
 		{
 			if (context.SyntaxReceiver is not EnumFinder enumFinder)
 				return;
+
+			var attribute = new AttributeGenerator { AttributeTargets = AttributeTargets.Assembly };
+			attribute.Generate(context, targetAttributeName);
 
 			if (!assemblyFilter.IsTargetAssembly(context))
 				return;
@@ -73,7 +71,7 @@
 				if (model.GetDeclaredSymbol(enumDeclaration) is INamedTypeSymbol enumSymbol)
 				{
 					SourceText sourceText = GenerateHasFlagExtension(enumSymbol);
-					context.AddSource($"{enumSymbol.Name}PandorityExtensions.generated.cs", sourceText);
+					context.AddSource($"{enumSymbol.Name}_EnumHasFlag.g.cs", sourceText);
 					Log.WriteLine($"->{enumSymbol.Name}");
 				}
 			}
@@ -84,7 +82,7 @@
 			string namespaceName = enumSymbol.ContainingNamespace.ToDisplayString();
 			string enumTypeName = enumSymbol.Name;
 			string fullEnumTypeName = GetFullTypeName(enumSymbol);
-			string visibility = GetVisibility(enumSymbol);
+			string visibility = GetAccessibility(enumSymbol);
 
 			string source = $@"namespace {namespaceName}
 {{
@@ -113,7 +111,7 @@
 		/// <summary>
 		/// Determines whether the extension method should be public or internal.
 		/// </summary>
-		private static string GetVisibility(INamedTypeSymbol typeSymbol)
+		private static string GetAccessibility(INamedTypeSymbol typeSymbol)
 		{
 			while (typeSymbol.ContainingType != null)
 			{

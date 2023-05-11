@@ -22,13 +22,21 @@ namespace Pandority
 
 		public string Build(GeneratorExecutionContext? context)
 		{
-			// Generators can execute in multiple processes (e.g., Unity and Rider) concurrently.
-			// Moreover, within each process, multiple threads can process different assemblies in parallel.
-			// Therefore, attempt to create a unique name to prevent overwriting log files.
-			string entryAssemblyName = Assembly.GetEntryAssembly()?.GetName().Name.Replace(".", "") ?? "Unknown";
-			string compilingAssemblyName = context?.Compilation.AssemblyName ?? "Unknown";
-
-			return $"{nameHint}_{compilingAssemblyName}_{entryAssemblyName}.log";
+			if (DebugUtility.IsDebugBuild)
+			{
+				// Generators can execute in multiple processes (e.g., Unity and Rider) concurrently.
+				// Moreover, within each process, multiple threads can process different assemblies in parallel.
+				// Therefore, attempt to create a unique name to prevent overwriting log files.
+				string entryAssemblyName = Assembly.GetEntryAssembly()?.GetName().Name.Replace(".", "") ?? "Unknown";
+				string compilingAssemblyName = context?.Compilation.AssemblyName ?? "Unknown";
+				return $"{nameHint}_{compilingAssemblyName}_{entryAssemblyName}.log";
+			}
+			else
+			{
+				// Avoid spamming the users log folder with files for every assembly. Even if the file is overwritten,
+				// it should be enough information to reproduce the issues in a debug environment later.
+				return $"{nameHint}.log";
+			}
 		}
 	}
 }
