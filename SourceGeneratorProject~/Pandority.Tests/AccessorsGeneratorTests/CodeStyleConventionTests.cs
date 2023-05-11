@@ -4,9 +4,9 @@ public class CodeStyleConventionTests
 {
 	[Theory]
 	[InlineData("number")]
-	[InlineData("m_Number")]
-	[InlineData("m_number")]
 	[InlineData("_number")]
+	[InlineData("m_number")]
+	[InlineData("m_Number")]
 	public void ConvertsFieldNameToPropertyName(string fieldName)
 	{
 		bool success = CodeStyleConvention.TryConvertToPropertyName(fieldName, out string propertyName);

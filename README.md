@@ -1,9 +1,9 @@
 # Pandority
 
-A Roslyn source generator for Unity projects, which adds the extension method `HasFlagNonAlloc` to user-defined enums.
-This custom method provides improved performance compared to `System.Enum.HasFlag` by avoiding boxing allocations.
+Roslyn source generators for Unity projects:
 
-![img](Documentation~/ProfilerSample.png)
+- [Enum HasFlag](Documentation~/EnumHasFlagGenerator.md)
+- [Accessors](Documentation~/AccessorsGenerator.md)
 
 ## Requirements
 
@@ -15,62 +15,20 @@ This custom method provides improved performance compared to `System.Enum.HasFla
 
 - JetBrains Rider or Visual Studio
 - [NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download)
-- Consult the [Unity documentation](https://docs.unity3d.com/2021.3/Documentation/Manual/roslyn-analyzers.html)
 
-## Usage
+## Setup
 
-Install the package to your Unity project. The source generator will be automatically configured during import.
+Install the package to your Unity project.
 
-To generate the extension code for **enums**:
-
-- Declare the `PandorityTarget` attribute on every assembly that should be visible to the generator
-- Apply the `System.Flags` attribute to the desired enum types
-
-### Example
-
-```csharp
-[assembly: PandorityTarget]
-
-[System.Flags]
-public enum Element
-{
-    Fire = 1,
-    Water = 2,
-    Earth = 4,
-    Air = 8,
-}
-
-public class GettingStarted
-{
-    public GettingStarted()
-    {
-        Element element = Element.Fire | Element.Earth;
-        bool hasFire = element.HasFlagNonAlloc(Element.Fire);
-        bool hasWater = element.HasFlagNonAlloc(Element.Water);
-        bool hasEarth = element.HasFlagNonAlloc(Element.Earth);
-        bool hasAir = element.HasFlagNonAlloc(Element.Air);
-    }
-}
-```
-
-Alternatively, to specify multiple assemblies in one place, create a file named `Config.Pandority.additionalfile`
-in the Unity Assets folder and list the assembly names, one per line.
-
-```.additionalfile
-MyAssemblyName
-Unity.2D.Common.Runtime
-UnityEngine.UI
-```
-
-## Limitations
-
-The generated extension method is named `HasFlagNonAlloc` instead of `HasFlag` to avoid being hidden
-by the builtin `System.Enum.HasFlag` instance method. In C#, instance methods take precedence over extension methods.
-However, consider that the new name is also clearer about the fact that it is a performance optimization.
+The package comes with a Unity AssetPostprocessor which automatically configures the `Pandority.dll` importer.
+As a "bonus" feature, it will also apply the correct settings to any DLL whose name ends with `SourceGenerator.dll`.
 
 ## Troubleshooting
 
-If the source generator fails to run, check for a crash log in these locations:
+If you encounter issue during setup,
+consult the [Unity documentation](https://docs.unity3d.com/2021.3/Documentation/Manual/roslyn-analyzers.html)
+
+If the source generator fails to produce output, check for a crash log in these locations:
 
 | Operating System | Log File Location          |
 |-----------------:|:---------------------------|
@@ -91,11 +49,6 @@ In cases where the log directory does not exist, the script will print its path.
 
 To enable debug logs, refer to the _Development_ section for instructions.
 
-## Implementation Notes
-
-The package comes with a Unity AssetPostprocessor which automatically configures the `Pandority.dll` importer.
-As a "bonus" feature, it will also apply to any DLL whose name ends with `SourceGenerator.dll`.
-
 ## Development
 
 Open the _SourceGeneratorProject_ directory in your IDE to modify the source generator.
@@ -115,6 +68,6 @@ A new release of the generator should always be built with the release configura
 To enable more detailed logging beyond the always-enabled crash log,
 set the solution configuration to `Debug` and rebuild the project.
 
-### Testing
+### Running Unit Tests
 
 Run `dotnet test` to execute the unit tests. The test project uses xUnit and NET 6.0.
